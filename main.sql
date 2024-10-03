@@ -20,6 +20,7 @@ SET vMostrarAdministraticoCC = "1";
 OLEDB CONNECT TO [Provider=SQLOLEDB.1;Password=2017Intranet2017;Persist Security Info=True;User ID=uminaj;Data Source=192.168.2.127;Use Procedure for Prepare=1;Auto Translate=True;Packet Size=4096;Use Encryption for Data=False;Tag with column collation when possible=False];
 Directory;
 
+// borrar
 RegulatoriasDNJ:
   LOAD 
   [OFICINA DR],
@@ -37,6 +38,7 @@ RegulatoriasDNJ:
   FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
   (ooxml, embedded labels, header is 1 lines, table is [VPT-DENUNCIA-RECLAMO]);
 
+// borrar
 RegulatoriasDNJ:
   LOAD 
   [FECHA REGULATORIA],
@@ -157,6 +159,7 @@ ControlesPromociones:
   FROM  [E:\MINAJ 2015\DNF\BASE DE DATOS DNF.xlsx]
   (ooxml, embedded labels, header is 1 lines, table is [Controles Promociones]);
 
+// Borrar
 ControlesOperadores:
   LOAD 
   [Nombre o Razón Social] as [Nombre o Razón Social CO], 
@@ -177,6 +180,7 @@ ControlesOperadores:
   FROM  [E:\MINAJ 2015\DNF\BASE DE DATOS DNF.xlsx]
   (ooxml, embedded labels, header is 1 lines, table is [Controles Operadores]);
 
+// Borrar
 FiscalizacionLoteriaAzar:
   LOAD 
   [Nombre o Razón Social]  as [Nombre o Razón Social FLO], 
@@ -197,6 +201,7 @@ FiscalizacionLoteriaAzar:
   FROM  [E:\MINAJ 2015\DNF\BASE DE DATOS DNF.xlsx]
   (ooxml, embedded labels, header is 1 lines, table is [Fisca LoteriaAzar]);
 
+// Borrar
 IntervencionesJLAS:
   LOAD 
   [Departamento]  				as [Departamento JLAS],
@@ -211,6 +216,7 @@ IntervencionesJLAS:
   FROM  [E:\MINAJ 2015\DNF\BASE DE DATOS DNF.xlsx]
   (ooxml, embedded labels, header is 1 lines, table is [INTERVENCIONES ENE-JUL]);
 
+// Borrar
 VisitasPE:
   LOAD 
   [Oficina]   		as [Oficina VI], 
@@ -229,6 +235,7 @@ VisitasPE:
   FROM  [E:\MINAJ 2015\DNF\BASE DE DATOS DNF.xlsx]
   (ooxml, embedded labels, header is 1 lines, table is [Visitas PE]);
 
+// Borrar
 IndicadoresVPT:
   LOAD 
   [Numero] as [Numero VPT],
@@ -241,6 +248,7 @@ IndicadoresVPT:
   FROM [E:\MINAJ 2015\VPT\BASE DE DATOS VPT.xlsx]
   (ooxml, embedded labels, header is 0 lines, table is [Indicadores-2016]);
 
+// Borrar
 NumeroFiscalizadoresVPT:
   LOAD 
   [NumeroFiscalizadores] as [Numero Fiscalizadores],
@@ -249,6 +257,7 @@ NumeroFiscalizadoresVPT:
   FROM [E:\MINAJ 2015\VPT\BASE DE DATOS VPT.xlsx]
   (ooxml, embedded labels, header is 0 lines, table is [Fiscalizadores]);
 
+// Borrar
 PremiosLonabolVPT:
   LOAD   
   [EMPRESA] as	[EmpresaPLVPT],  
@@ -261,6 +270,7 @@ PremiosLonabolVPT:
   FROM [E:\MINAJ 2015\DNF\BASE DE DATOS DNF.xlsx]
   (ooxml, embedded labels, header is 1 lines, table is [VPT-PREMIOS-LONABOL]);
   
+  // Borrar
   MultasLonabolVPT:
   LOAD   
   [EMPRESA] as	[EmpresaMLVPT],  
@@ -275,6 +285,7 @@ PremiosLonabolVPT:
   FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
   (ooxml, embedded labels, header is 1 lines, table is [VPT-SANCIONES-NO-TRANSF-LONABOL]);
 
+// Borrar
 SancionadorNacionalINTERNO:
   LOAD   
   [HR] as	[SANNAL_HR],  
@@ -301,6 +312,7 @@ SancionadorNacionalINTERNO:
   FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
   (ooxml, embedded labels, header is 1 lines, table is [SANCIONADOR-NAL]);
 
+// Borrar
 MultasRecaudadoSegunSigepVPT:
   LOAD   
   [CONCEPTO_RECAUDACION_VPT_Sigep],  
@@ -310,7 +322,8 @@ MultasRecaudadoSegunSigepVPT:
   [OBERVACIONES_VPT_Sigep]
   FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
   (ooxml, embedded labels, header is 1 lines, table is [MULTAS-SEGUN-SIGEP]);
-  
+
+// Borrar  
 MaquinasDestruidasDonasVPT_Punto19:
   LOAD   
   [DIRECCIÓN] as	[VPT_Punto19_Direccion],  
