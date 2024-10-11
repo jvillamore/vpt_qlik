@@ -438,3 +438,98 @@ from [AlmacenCorporativo.PagosSanciones]
 group by Oficina, month(FechaPago), year(FechaPago), TipoPago, TipoDocumento,Motivo;
 
 */
+/* Resumen proceso sancionador*/
+ResumenProcesoSancionador1:
+LOAD
+	  [tipoPS]      					    as [TipoPS]  ,
+	  	  [DireccionPS]      					    as [DireccionPS]  ,
+		  [anioPS]            					    as [AñoPS],
+		   [mesPS]            					    as [MesPS],
+		[cantidadPS]                         as [CantidadPS];
+SQL 
+select
+	distinct 
+     'AAPA' as tipoPS,
+	case
+		when dd.Oficina = 'DIRECCION NACIONAL' then 'DNAL'
+		when dd.Oficina = 'DIRECCION REGIONAL COCHABAMBA' then 'DRCB'
+		when dd.Oficina = 'DIRECCION REGIONAL SANTA CRUZ' then 'DRSC'
+		when dd.Oficina = 'DIRECCION REGIONAL LA PAZ' then 'DRLP'
+	end 'DireccionPS',
+	year (dd.FechaAAPA) as anioPS,
+	month (dd.FechaAAPA) as mesPS,
+		count(dd.CiteAAPA) cantidadPS
+from
+	MINAJPRODUCCION.dbo.[AlmacenCorporativo.Sanciones] dd
+join MINAJPRODUCCION.dbo.[AlmacenCorporativo.Tramites] tra on
+	tra.TramiteID = dd.TramiteID
+where
+	dd.EstadoSancion = 'ACTIVO'
+	--and EstadoRS not in('ERROR') --SE ADICIONA POR CASO DE SOPORTE PALMENIA COSSIO CASO: DUPLICIDAD DE TRAMITE DEL 2012 Y NUEVO GENERADO POR PLANTILLA EN EL 2024 FECHA 09092024
+	and DimSancionID not in(29701)
+	--SE ADICIONA POR CASO DE SOPORTE PALMENIA COSSIO CASO: DUPLICIDAD DE TRAMITE DEL 2012 Y NUEVO GENERADO POR PLANTILLA EN EL 2024 FECHA 09092024
+	and dd.Oficina = 'DIRECCION REGIONAL SANTA CRUZ'
+group by
+	dd.Oficina,
+	year (dd.FechaAAPA) ,
+	month (dd.FechaAAPA)
+	--order by 2 desc, 3 desc, 1
+UNION
+      select
+	distinct
+      'RS' as tipoPS,
+		case
+		when dd.Oficina = 'DIRECCION NACIONAL' then 'DNAL'
+		when dd.Oficina = 'DIRECCION REGIONAL COCHABAMBA' then 'DRCB'
+		when dd.Oficina = 'DIRECCION REGIONAL SANTA CRUZ' then 'DRSC'
+		when dd.Oficina = 'DIRECCION REGIONAL LA PAZ' then 'DRLP'
+	end 'DireccionPS',
+	year (dd.FechaRS) as anioPS,
+	month (dd.FechaRS) as mesPS,
+	count(dd.CodigoCiteRS) cantidadPS
+from
+	MINAJPRODUCCION.dbo.[AlmacenCorporativo.Sanciones] dd
+join MINAJPRODUCCION.dbo.[AlmacenCorporativo.Tramites] tra on
+	tra.TramiteID = dd.TramiteID
+where
+	dd.EstadoSancion = 'ACTIVO'
+	--and EstadoRS not in('ERROR') --SE ADICIONA POR CASO DE SOPORTE PALMENIA COSSIO CASO: DUPLICIDAD DE TRAMITE DEL 2012 Y NUEVO GENERADO POR PLANTILLA EN EL 2024 FECHA 09092024
+	and DimSancionID not in(29701)
+	--SE ADICIONA POR CASO DE SOPORTE PALMENIA COSSIO CASO: DUPLICIDAD DE TRAMITE DEL 2012 Y NUEVO GENERADO POR PLANTILLA EN EL 2024 FECHA 09092024
+	and dd.Oficina = 'DIRECCION REGIONAL SANTA CRUZ'
+group by
+	dd.Oficina,
+	year (dd.FechaRS) ,
+	month (dd.FechaRS)
+	-- order by 2 desc, 3 desc, 1
+UNION
+  select
+	distinct
+      'AFA' as tipoPS,
+		case
+		when dd.Oficina = 'DIRECCION NACIONAL' then 'DNAL'
+		when dd.Oficina = 'DIRECCION REGIONAL COCHABAMBA' then 'DRCB'
+		when dd.Oficina = 'DIRECCION REGIONAL SANTA CRUZ' then 'DRSC'
+		when dd.Oficina = 'DIRECCION REGIONAL LA PAZ' then 'DRLP'
+	end 'DireccionPS',
+	year (dd.FechaAFA) as anioPS,
+	month (dd.FechaAFA) as mesPS,
+	count(dd.CiteAFA) cantidadPS
+from
+	MINAJPRODUCCION.dbo.[AlmacenCorporativo.Sanciones] dd
+join MINAJPRODUCCION.dbo.[AlmacenCorporativo.Tramites] tra on
+	tra.TramiteID = dd.TramiteID
+where
+	dd.EstadoSancion = 'ACTIVO'
+	--and EstadoRS not in('ERROR') --SE ADICIONA POR CASO DE SOPORTE PALMENIA COSSIO CASO: DUPLICIDAD DE TRAMITE DEL 2012 Y NUEVO GENERADO POR PLANTILLA EN EL 2024 FECHA 09092024
+	and DimSancionID not in(29701)
+	--SE ADICIONA POR CASO DE SOPORTE PALMENIA COSSIO CASO: DUPLICIDAD DE TRAMITE DEL 2012 Y NUEVO GENERADO POR PLANTILLA EN EL 2024 FECHA 09092024
+	and dd.Oficina = 'DIRECCION REGIONAL SANTA CRUZ'
+group by
+	dd.Oficina,
+	year (dd.FechaAFA) ,
+	month (dd.FechaAFA)
+order by
+	2 desc,
+	3 desc
+  ;

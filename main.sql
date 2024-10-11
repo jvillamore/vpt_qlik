@@ -17,6 +17,12 @@ SET HidePrefix = '_';
 SET HideSuffix = '%';
 SET vMostrarAdministraticoCC = "1";
 
+// Origen de datos Excel
+SET dnf_path = 'D:\AJ\DataSource\DNF\';
+SET dnj_path = 'D:\AJ\DataSource\DNJ\';
+SET vpt_path = 'D:\AJ\DataSource\VPT\';
+
+
 OLEDB CONNECT TO [Provider=SQLOLEDB.1;Password=2017Intranet2017;Persist Security Info=True;User ID=uminaj;Data Source=192.168.2.127;Use Procedure for Prepare=1;Auto Translate=True;Packet Size=4096;Use Encryption for Data=False;Tag with column collation when possible=False];
 Directory;
 
@@ -35,7 +41,7 @@ RegulatoriasDNJ:
   [DEPARTAMENTO DR]	,
   [DESCRIPCION DR],
   [OBSERVACIONES DR]
-  FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
+  FROM $(dnj_path)BASE DE DATOS DNJ.xlsx
   (ooxml, embedded labels, header is 1 lines, table is [VPT-DENUNCIA-RECLAMO]);
 
 // borrar
@@ -45,7 +51,7 @@ RegulatoriasDNJ:
   [NRO RESOLUCION REGULATORIA],
   [NOMBRE RESOLUCION REGULATORIA],
   [OBSERVACIONES REGULATORIA]	
-  FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
+  FROM $(dnj_path)BASE DE DATOS DNJ.xlsx
   (ooxml, embedded labels, header is 1 lines, table is [VPT-REGULATORIA]);
    
 ResolucionesRSDNJ:
@@ -58,7 +64,7 @@ ResolucionesRSDNJ:
   [FECHA RESOLUCION RS]  ,
   [MONTO RESOLUCION RS],
   [OBSERVACIONES RS]
-  FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
+  FROM $(dnj_path)BASE DE DATOS DNJ.xlsx
   (ooxml, embedded labels, header is 0 lines, table is [VPT-RS DNAL]);
 
 RecursoJerarquicoPE:
@@ -72,7 +78,7 @@ RecursoJerarquicoPE:
   [PERIODO RJ],
   [AÑO RJ],
   [OBSERVACIONES RJ]
-  FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
+  FROM $(dnj_path)BASE DE DATOS DNJ.xlsx
   (ooxml, embedded labels, header is 0 lines, table is [VPT-JERARQUICOS PE]);
   
 RecursoJerarquicoCONFIRMADOS:
@@ -86,7 +92,7 @@ RecursoJerarquicoCONFIRMADOS:
   [PERIODO RJC],
   [AÑO RJC],
   [OBSERVACIONES RJC]
-  FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
+  FROM $(dnj_path)BASE DE DATOS DNJ.xlsx
   (ooxml, embedded labels, header is 0 lines, table is [VPT-JERARQUICOS CONF]);
 
 
@@ -101,7 +107,7 @@ RecursoRevocatoriaPE:
   [PERIODO RR],
   [AÑO RR],
   [OBSERVACIONES RR]
-  FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
+  FROM $(dnj_path)BASE DE DATOS DNJ.xlsx
   (ooxml, embedded labels, header is 0 lines, table is [VPT-REVOCATORIAS PE]);
 
 RecursoRevocatoriaCONFIRMADAS:
@@ -115,7 +121,7 @@ RecursoRevocatoriaCONFIRMADAS:
   [PERIODO RRC],
   [AÑO RRC],
   [OBSERVACIONES RRC]
-  FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
+  FROM $(dnj_path)BASE DE DATOS DNJ.xlsx
   (ooxml, embedded labels, header is 0 lines, table is [VPT-REVOCATORIAS CONF]);
 
 solicitudLOVPT:
@@ -133,9 +139,8 @@ solicitudLOVPT:
   [PERIODO LOVPT],
   [Año LOVPT],
   [OBSERVACIONES LOVPT]
-  FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
+  FROM $(dnj_path)BASE DE DATOS DNJ.xlsx
   (ooxml, embedded labels, header is 0 lines, table is [VPT-LO]);
-
 
 ControlesPromociones:
   LOAD 
@@ -156,7 +161,7 @@ ControlesPromociones:
   [Condición PE]  				 as [Condición PE CPE],
   [Tipo Actividad]  			 as [Tipo Actividad CPE],
   [Observaciones CPE]				 as [Observaciones CPE] 
-  FROM  [E:\MINAJ 2015\DNF\BASE DE DATOS DNF.xlsx]
+  FROM $(dnf_path)BASE DE DATOS DNF.xlsx
   (ooxml, embedded labels, header is 1 lines, table is [Controles Promociones]);
 
 // Borrar
@@ -177,7 +182,7 @@ ControlesOperadores:
   [Año]    				  as  [Año CO],
   [Tipo Actividad]   	  as [Tipo Actividad CO],
   [Observaciones CO]		  as [Observaciones CO] 
-  FROM  [E:\MINAJ 2015\DNF\BASE DE DATOS DNF.xlsx]
+  FROM $(dnf_path)BASE DE DATOS DNF.xlsx
   (ooxml, embedded labels, header is 1 lines, table is [Controles Operadores]);
 
 // Borrar
@@ -198,7 +203,7 @@ FiscalizacionLoteriaAzar:
   [Año]    				   as [Año FLO],
   [Tipo Actividad]   	   as [Tipo Actividad FLO],
   [Observaciones FLO]	   as [Observaciones FLO]    
-  FROM  [E:\MINAJ 2015\DNF\BASE DE DATOS DNF.xlsx]
+  FROM $(dnf_path)BASE DE DATOS DNF.xlsx
   (ooxml, embedded labels, header is 1 lines, table is [Fisca LoteriaAzar]);
 
 // Borrar
@@ -213,7 +218,7 @@ IntervencionesJLAS:
   [Año] 						as [Año JLAS],
   [NumeroMes] 					as [Numero Mes JLAS],
   [Observaciones JLAS]		  		as [Observaciones JLAS] 
-  FROM  [E:\MINAJ 2015\DNF\BASE DE DATOS DNF.xlsx]
+  FROM $(dnf_path)BASE DE DATOS DNF.xlsx
   (ooxml, embedded labels, header is 1 lines, table is [INTERVENCIONES ENE-JUL]);
 
 // Borrar
@@ -232,7 +237,7 @@ VisitasPE:
   [Mes]  			as   [Mes VI],
   [Año]    			as  [Año VI],
   [Observaciones VI]	as [Observaciones VI] 
-  FROM  [E:\MINAJ 2015\DNF\BASE DE DATOS DNF.xlsx]
+  FROM $(dnf_path)BASE DE DATOS DNF.xlsx
   (ooxml, embedded labels, header is 1 lines, table is [Visitas PE]);
 
 // Borrar
@@ -245,7 +250,7 @@ IndicadoresVPT:
   [meta] as [Meta Anual VPT]
   //[PERIODO IND],
   //[AÑO IND]
-  FROM [E:\MINAJ 2015\VPT\BASE DE DATOS VPT.xlsx]
+  FROM $(vpt_path)BASE DE DATOS VPT.xlsx
   (ooxml, embedded labels, header is 0 lines, table is [Indicadores-2016]);
 
 // Borrar
@@ -254,7 +259,7 @@ NumeroFiscalizadoresVPT:
   [NumeroFiscalizadores] as [Numero Fiscalizadores],
   [PeriodoFiscalizadores] as [Periodo Fiscalizadores],
   [AñoFiscalizadores] as [Año Fiscalizadores]
-  FROM [E:\MINAJ 2015\VPT\BASE DE DATOS VPT.xlsx]
+  FROM $(vpt_path)BASE DE DATOS VPT.xlsx
   (ooxml, embedded labels, header is 0 lines, table is [Fiscalizadores]);
 
 // Borrar
@@ -267,7 +272,7 @@ PremiosLonabolVPT:
   [NO ENTREGADO] as [NoEntregadoPLVPT],
   [PERIODO] as [PeriodoPLVPT],
   [AÑO] as [AnioPLVPT]
-  FROM [E:\MINAJ 2015\DNF\BASE DE DATOS DNF.xlsx]
+  FROM $(dnf_path)BASE DE DATOS DNF.xlsx
   (ooxml, embedded labels, header is 1 lines, table is [VPT-PREMIOS-LONABOL]);
   
   // Borrar
@@ -281,8 +286,7 @@ PremiosLonabolVPT:
   [DIRECCION REGIONAL] as [DireccionRegionalMLVPT],
   [PERIODO] as [PeriodoMLVPT],
   [AÑO] as [AnioMLVPT]
- 
-  FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
+  FROM $(dnj_path)BASE DE DATOS DNJ.xlsx
   (ooxml, embedded labels, header is 1 lines, table is [VPT-SANCIONES-NO-TRANSF-LONABOL]);
 
 // Borrar
@@ -309,7 +313,7 @@ SancionadorNacionalINTERNO:
   [SANCION EN UFV RS] as [SANNAL_SANCIONRSUFV],
   [GESTION] as [SANNAL_GESTIONSANCIONRSUFV],
   [OBSERVACIONES] as [SANNAL_OBSERVACIONESSANCIONRSUFV]
-  FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
+  FROM $(dnj_path)BASE DE DATOS DNJ.xlsx
   (ooxml, embedded labels, header is 1 lines, table is [SANCIONADOR-NAL]);
 
 // Borrar
@@ -320,7 +324,7 @@ MultasRecaudadoSegunSigepVPT:
   [MES_VPT_Sigep],
   [AÑO_VPT_Sigep],
   [OBERVACIONES_VPT_Sigep]
-  FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
+  FROM $(dnj_path)BASE DE DATOS DNJ.xlsx
   (ooxml, embedded labels, header is 1 lines, table is [MULTAS-SEGUN-SIGEP]);
 
 // Borrar  
@@ -333,6 +337,5 @@ MaquinasDestruidasDonasVPT_Punto19:
   [DONADOS Y ENTREGADOS PARA DESTRUCCIÓN] as [VPT_Punto19_Donadosentregados],
   [TOTAL DESTRUIDOS] as [VPT_Punto19_TotalDestruidos],
   [GESTION] as [VPT_Punto19_Gestion]
-  FROM [E:\MINAJ 2015\DNF\BASE DE DATOS DNF.xlsx]
+  FROM $(dnf_path)BASE DE DATOS DNF.xlsx
   (ooxml, embedded labels, header is 1 lines, table is [MAQUINAS-DESTRUIDAS]);
-
