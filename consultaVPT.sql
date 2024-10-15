@@ -8,6 +8,8 @@ select
 		from
 			[ODS.VPTResolucionesRegulatorias] as rr
 		where
+            -- Se agrega la condición para quitar la normativa sin resolución
+			rr.NumeroResolucion !='' and
             Gestion = YEAR(rr.fecharesolucion)
 			and NumeroMes >= MONTH(rr.fecharesolucion))
 		when NumeroIndicador = 2
@@ -427,16 +429,11 @@ select
 					and NumeroMes >= MONTH(rjc.Periodo)
 						and rjc.Resuelve = 'CONFIRMAR')
 		end
-		when NumeroIndicador = 12
-		and Gestion >= 2024			
-			then (
-		select
-			count(*)
-		from
-			[ODS.VPTRecursosJerarquicosConfirmados]
-		where
-			year(Periodo)= Gestion
-				and month(Periodo)<= NumeroMes)
+        -- Registros de la tabla [ODS.VPTIndicadoresGestion]
+        when NumeroIndicador = 12
+		and Gestion >= 2024
+            then (Numerador)
+         ------   
 		when NumeroIndicador = 13
 		and Gestion <= 2023
 		  then
@@ -730,16 +727,10 @@ select
 		--//	then (select count(*) from [ODS.VPTDenunciasReclamos] as dr where Gestion = YEAR(dr.Periodo) and NumeroMes>= MONTH(dr.Periodo))
 		when NumeroIndicador = 12
 		and Gestion <= 2023 then CantidadFiscalizadores
-		when NumeroIndicador = 12
-		and Gestion >= 2024			
-			then (
-		select
-			count(*)
-		from
-			[ODS.VPTRecursosJerarquicos]
-		where
-			year(Periodo)= Gestion
-				and month(Periodo)<= NumeroMes )
+                -- Ajuste 
+        when NumeroIndicador = 12
+		and Gestion >= 2024
+        	then ( Denominador)		
 		when NumeroIndicador = 13
 			then CantidadFiscalizadores
 		else Denominador
