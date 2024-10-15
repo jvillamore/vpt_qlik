@@ -23,14 +23,7 @@ select
 				and NumeroMes >= MONTH(lo.Periodo))
 		when NumeroIndicador = 3
 		and Gestion >= 2024
-			then (
-		select
-			count(*)
-		from
-			vpt.ViewSolicitAutoriz
-		where
-			year([FechaComodin VPT])= Gestion
-				and month([FechaComodin VPT])<= NumeroMes)
+			then ( Numerador)
 		when NumeroIndicador = 3
 		and Gestion <= 2023
 			then
@@ -535,14 +528,7 @@ select
 	case 
 		when NumeroIndicador = 3
 		and Gestion >= 2024
-			then (
-		select
-			count(*)
-		from
-			vpt.ViewSolicitAutoriz
-		where
-			year([FechaComodin VPT])= Gestion
-				and month([FechaComodin VPT])<= NumeroMes)
+			then ( Denominador)
 		when NumeroIndicador = 3
 		and Gestion <= 2023
 		then 
