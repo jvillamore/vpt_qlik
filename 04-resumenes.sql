@@ -438,13 +438,14 @@ from [AlmacenCorporativo.PagosSanciones]
 group by Oficina, month(FechaPago), year(FechaPago), TipoPago, TipoDocumento,Motivo;
 
 */
+
 /* Resumen proceso sancionador*/
 ResumenProcesoSancionador1:
 LOAD
 	  [tipoPS]      					    as [TipoPS]  ,
-	  	  [DireccionPS]      					    as [DireccionPS]  ,
-		  [anioPS]            					    as [AñoPS],
-		   [mesPS]            					    as [MesPS],
+	  	  [DireccionPS]      					    as [Dirección]  ,
+		  [anioPS]            					    as [Año],
+		   [mesPS]            					    as [Mes],
 		[cantidadPS]                         as [CantidadPS];
 SQL 
 select
@@ -457,7 +458,21 @@ select
 		when dd.Oficina = 'DIRECCION REGIONAL LA PAZ' then 'DRLP'
 	end 'DireccionPS',
 	year (dd.FechaAAPA) as anioPS,
-	month (dd.FechaAAPA) as mesPS,
+  case   
+            when month (dd.FechaAAPA) = 1 then  'ene'
+            when month (dd.FechaAAPA) = 2 then  'feb'
+            when month (dd.FechaAAPA) = 3 then  'mar'
+            when month (dd.FechaAAPA) = 4 then  'abr'
+            when month (dd.FechaAAPA) = 5 then  'may'
+            when month (dd.FechaAAPA)  = 6 then  'jun'
+            when month (dd.FechaAAPA) = 7 then  'jul'
+            when month (dd.FechaAAPA) = 8 then  'ago'
+            when month (dd.FechaAAPA) = 9 then  'sep'
+            when month (dd.FechaAAPA) = 10 then 'oct'
+            when month (dd.FechaAAPA) = 11 then 'nov'
+            when month (dd.FechaAAPA) = 12 then 'dic'
+            when month (dd.FechaAAPA) is null then 'NA'
+          end  as mesPS,
 		count(dd.CiteAAPA) cantidadPS
 from
 	MINAJPRODUCCION.dbo.[AlmacenCorporativo.Sanciones] dd
@@ -468,7 +483,6 @@ where
 	--and EstadoRS not in('ERROR') --SE ADICIONA POR CASO DE SOPORTE PALMENIA COSSIO CASO: DUPLICIDAD DE TRAMITE DEL 2012 Y NUEVO GENERADO POR PLANTILLA EN EL 2024 FECHA 09092024
 	and DimSancionID not in(29701)
 	--SE ADICIONA POR CASO DE SOPORTE PALMENIA COSSIO CASO: DUPLICIDAD DE TRAMITE DEL 2012 Y NUEVO GENERADO POR PLANTILLA EN EL 2024 FECHA 09092024
-	and dd.Oficina = 'DIRECCION REGIONAL SANTA CRUZ'
 group by
 	dd.Oficina,
 	year (dd.FechaAAPA) ,
@@ -485,7 +499,21 @@ UNION
 		when dd.Oficina = 'DIRECCION REGIONAL LA PAZ' then 'DRLP'
 	end 'DireccionPS',
 	year (dd.FechaRS) as anioPS,
-	month (dd.FechaRS) as mesPS,
+  case   
+            when month (dd.FechaRS) = 1 then  'ene'
+            when month (dd.FechaRS) = 2 then  'feb'
+            when month (dd.FechaRS) = 3 then  'mar'
+            when month (dd.FechaRS) = 4 then  'abr'
+            when month (dd.FechaRS) = 5 then  'may'
+            when month (dd.FechaRS)  = 6 then  'jun'
+            when month (dd.FechaRS) = 7 then  'jul'
+            when month (dd.FechaRS) = 8 then  'ago'
+            when month (dd.FechaRS) = 9 then  'sep'
+            when month (dd.FechaRS) = 10 then 'oct'
+            when month (dd.FechaRS) = 11 then 'nov'
+            when month (dd.FechaRS) = 12 then 'dic'
+            when month (dd.FechaRS) is null then 'NA'
+          end  as mesPS,
 	count(dd.CodigoCiteRS) cantidadPS
 from
 	MINAJPRODUCCION.dbo.[AlmacenCorporativo.Sanciones] dd
@@ -496,7 +524,6 @@ where
 	--and EstadoRS not in('ERROR') --SE ADICIONA POR CASO DE SOPORTE PALMENIA COSSIO CASO: DUPLICIDAD DE TRAMITE DEL 2012 Y NUEVO GENERADO POR PLANTILLA EN EL 2024 FECHA 09092024
 	and DimSancionID not in(29701)
 	--SE ADICIONA POR CASO DE SOPORTE PALMENIA COSSIO CASO: DUPLICIDAD DE TRAMITE DEL 2012 Y NUEVO GENERADO POR PLANTILLA EN EL 2024 FECHA 09092024
-	and dd.Oficina = 'DIRECCION REGIONAL SANTA CRUZ'
 group by
 	dd.Oficina,
 	year (dd.FechaRS) ,
@@ -513,8 +540,22 @@ UNION
 		when dd.Oficina = 'DIRECCION REGIONAL LA PAZ' then 'DRLP'
 	end 'DireccionPS',
 	year (dd.FechaAFA) as anioPS,
-	month (dd.FechaAFA) as mesPS,
-	count(dd.CiteAFA) cantidadPS
+    case   
+            when month (dd.FechaAFA) = 1 then  'ene'
+            when month (dd.FechaAFA) = 2 then  'feb'
+            when month (dd.FechaAFA) = 3 then  'mar'
+            when month (dd.FechaAFA) = 4 then  'abr'
+            when month (dd.FechaAFA) = 5 then  'may'
+            when month (dd.FechaAFA)  = 6 then  'jun'
+            when month (dd.FechaAFA) = 7 then  'jul'
+            when month (dd.FechaAFA) = 8 then  'ago'
+            when month (dd.FechaAFA) = 9 then  'sep'
+            when month (dd.FechaAFA) = 10 then 'oct'
+            when month (dd.FechaAFA) = 11 then 'nov'
+            when month (dd.FechaAFA) = 12 then 'dic'
+            when month (dd.FechaAFA) is null then 'NA'
+          end  as mesPS,
+		count(dd.CiteAFA) cantidadPS
 from
 	MINAJPRODUCCION.dbo.[AlmacenCorporativo.Sanciones] dd
 join MINAJPRODUCCION.dbo.[AlmacenCorporativo.Tramites] tra on
@@ -524,7 +565,6 @@ where
 	--and EstadoRS not in('ERROR') --SE ADICIONA POR CASO DE SOPORTE PALMENIA COSSIO CASO: DUPLICIDAD DE TRAMITE DEL 2012 Y NUEVO GENERADO POR PLANTILLA EN EL 2024 FECHA 09092024
 	and DimSancionID not in(29701)
 	--SE ADICIONA POR CASO DE SOPORTE PALMENIA COSSIO CASO: DUPLICIDAD DE TRAMITE DEL 2012 Y NUEVO GENERADO POR PLANTILLA EN EL 2024 FECHA 09092024
-	and dd.Oficina = 'DIRECCION REGIONAL SANTA CRUZ'
 group by
 	dd.Oficina,
 	year (dd.FechaAFA) ,
