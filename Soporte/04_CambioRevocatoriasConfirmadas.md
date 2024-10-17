@@ -1,0 +1,63 @@
+## Tabla [ODS.VPTRecursosRevocatoriasConfirmados] 
+- Se regularizaron los registros en la tabla, existian registros faltantes que se encontraban en el XLS (base de datos DBJ, Hoja VPT-REVOCATORIAS CONF)
+- Se creo un backup de la tabla antes de la modificación (04 ODS.VPTRecursosRevocatoriasConfirmados_BKP20241016.sql)
+
+## Tabla [dbo].[ODS.VPTRecursosJerarquicosConfirmados]
+- Se verificaron los registros en la tabla, se encontraron 3 registros del mes de Abril-2024 con el año 2004, se consultó a la DNJ y se solicitó la actualización de la fecha correcta (2024)
+- Los registros modificados tienen el ID
+			1266 - MEFP/VPT/URJMJ N° 018	24/4/2004 a 24/4/2024
+			1267 - MEFP/VPT/URJMJ N° 019	25/4/2004 a 25/4/2024
+			1268 - MEFP/VPT/URJMJ N° 020	25/4/2004 a 25/4/2024
+- Correo "REMITO CORRECCIONES A VPT MES DE MAYO" 
+- Se creo un backup de la tabla antes de la modificación (04 ODS.VPTRecursosJerarquicosConfirmados_BKP20241017.sql)
+- Se quito la condición de la Dimensión (object CH1754), "17.Cantidad de Recursos Jerárquicos con posición ratificada a favor de la AJ":
+```javascript
+	=if([RESUELVE RJC]='CONFIRMA',[RESUELVE RJC])
+```
+	
+- Se actualizó la consulta en MAIN (QLIK) para eliminar la dependencia al archivo XLSX e incluir los estados solicitados por la DNJ:
+```javascript
+
+RecursoJerarquicoCONFIRMADOS:
+  LOAD
+  [RazonSocial] as [RAZON SOCIAL RJC],
+	[NIT] as [NIT O CI RJC],
+	[Departamento] as [DEPARTAMENTO RJC],
+	[NumeroResolucion] as [N° RESOLUCION RJC],
+	[FechaResolucion] as [FECHA RJC],
+	[Resuelve] as [RESUELVE RJC],
+	[mes] as [PERIODO RJC],
+	[anio] as [AÑO RJC],
+	[observacion] as [OBSERVACIONES RJC];   
+SQL
+SELECT
+	RazonSocial, NIT, Departamento, NumeroResolucion, FechaResolucion, Resuelve ,
+	case
+		when month(Periodo) = 1 then 'ene'
+		when month(Periodo) = 2 then 'feb'
+		when month(Periodo) = 3 then 'mar'
+		when month(Periodo) = 4 then 'abr'
+		when month(Periodo) = 5 then 'may'
+		when month(Periodo) = 6 then 'jun'
+		when month(Periodo) = 7 then 'jul'
+		when month(Periodo) = 8 then 'ago'
+		when month(Periodo) = 9 then 'sep'
+		when month(Periodo) = 10 then 'oct'
+		when month(Periodo) = 11 then 'nov'
+		when month(Periodo) = 12 then 'dic'
+		when month(Periodo) is null then 'NA'
+	end as mes,
+	year(Periodo) as anio,
+	'' as observacion
+FROM
+	[ODS.VPTRecursosJerarquicosConfirmados]
+WHERE
+((year(Periodo)<= 2023
+		and Resuelve like '%CONFIRM%' COLLATE Latin1_General_CI_AS)
+	or (year(Periodo)>= 2024
+		and not (Resuelve like 'REVOC_' COLLATE Latin1_General_CI_AS
+			or Resuelve like 'REVOCA_' COLLATE Latin1_General_CI_AS
+			or Resuelve like 'REVOC_% TOTALMENTE' COLLATE Latin1_General_CI_AS
+			)));
+```
+

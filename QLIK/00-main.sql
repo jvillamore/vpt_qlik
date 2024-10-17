@@ -83,17 +83,45 @@ RecursoJerarquicoPE:
   
 RecursoJerarquicoCONFIRMADOS:
   LOAD
-  [RAZON SOCIAL RJC],
-  [NIT O CI RJC],
-  [DEPARTAMENTO RJC],
-  [N° RESOLUCION RJC],
-  [FECHA RJC],
-  [RESUELVE RJC],
-  [PERIODO RJC],
-  [AÑO RJC],
-  [OBSERVACIONES RJC]
-  FROM $(dnj_path)BASE DE DATOS DNJ.xlsx
-  (ooxml, embedded labels, header is 0 lines, table is [VPT-JERARQUICOS CONF]);
+  [RazonSocial] as [RAZON SOCIAL RJC],
+	[NIT] as [NIT O CI RJC],
+	[Departamento] as [DEPARTAMENTO RJC],
+	[NumeroResolucion] as [N° RESOLUCION RJC],
+	[FechaResolucion] as [FECHA RJC],
+	[Resuelve] as [RESUELVE RJC],
+	[mes] as [PERIODO RJC],
+	[anio] as [AÑO RJC],
+	[observacion] as [OBSERVACIONES RJC];   
+SQL
+SELECT
+	RazonSocial, NIT, Departamento, NumeroResolucion, FechaResolucion, Resuelve ,
+	case
+		when month(Periodo) = 1 then 'ene'
+		when month(Periodo) = 2 then 'feb'
+		when month(Periodo) = 3 then 'mar'
+		when month(Periodo) = 4 then 'abr'
+		when month(Periodo) = 5 then 'may'
+		when month(Periodo) = 6 then 'jun'
+		when month(Periodo) = 7 then 'jul'
+		when month(Periodo) = 8 then 'ago'
+		when month(Periodo) = 9 then 'sep'
+		when month(Periodo) = 10 then 'oct'
+		when month(Periodo) = 11 then 'nov'
+		when month(Periodo) = 12 then 'dic'
+		when month(Periodo) is null then 'NA'
+	end as mes,
+	year(Periodo) as anio,
+	'' as observacion
+FROM
+	[ODS.VPTRecursosJerarquicosConfirmados]
+WHERE
+((year(Periodo)<= 2023
+		and Resuelve like '%CONFIRM%' COLLATE Latin1_General_CI_AS)
+	or (year(Periodo)>= 2024
+		and not (Resuelve like 'REVOC_' COLLATE Latin1_General_CI_AS
+			or Resuelve like 'REVOCA_' COLLATE Latin1_General_CI_AS
+			or Resuelve like 'REVOC_% TOTALMENTE' COLLATE Latin1_General_CI_AS
+			)));
 
 
 RecursoRevocatoriaPE:

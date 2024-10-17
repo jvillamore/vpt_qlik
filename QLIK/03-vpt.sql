@@ -752,14 +752,18 @@ select
 		when NumeroIndicador = 11
 		and Gestion >= 2024			
 			then (
-		select
-			count(*)
-		from
-			[ODS.VPTRecursosRevocatoriasConfirmados]
-		where
-			year(Periodo)= Gestion
-				and month(Periodo)<= NumeroMes
-					and upper(FormaResolucion) like '%CONFIRM%')
+				select
+							count(*)
+				from
+							[ODS.VPTRecursosRevocatoriasConfirmados]
+				where
+					( (year(Periodo)<= 2023
+						and FormaResolucion like '%CONFIRM%' COLLATE Latin1_General_CI_AS)
+					or (year(Periodo)>= 2024
+						and FormaResolucion not in('REVOCA', 'REVOCA TOTALMENTE', 'REVOCAR', 'REVOCAR TOTALMENTE')) )
+					and year(Periodo)= Gestion
+					and month(Periodo)<= NumeroMes
+				)
 		when NumeroIndicador = 12
 		and Gestion <= 2023
 		 then 
@@ -1351,14 +1355,28 @@ LOAD
      [periodo_revocatorias_confirm_pe]   as   [periodo_revocatorias_confirm_pe];            
 
 SQL
-select ovrc.RazonSocial razonsocial_revocatorias_confirm_pe,NIT nit_revocatorias_confirm_pe, 
-Departamento depto_revocatorias_confirm_pe, NumeroResolucion nroproveido_revocatorias_confirm_pe ,
-FechaResolucion fecproveido_revocatorias_confirm_pe , FormaResolucion resolucion_revocatorias_confirm_pe, 
-lower(left(datename(month,Periodo),3)) mes_revocatorias_confirm_pe,'NINGUNA' observ_revocatorias_confirm_pe,
-Periodo periodo_revocatorias_confirm_pe
-FROM [ODS.VPTRecursosRevocatoriasConfirmados] ovrc 
-where upper(FormaResolucion) like '%CONFIRM%'
-order by Periodo,FechaResolucion;
+select
+	ovrc.RazonSocial razonsocial_revocatorias_confirm_pe,
+	NIT nit_revocatorias_confirm_pe,
+	Departamento depto_revocatorias_confirm_pe,
+	NumeroResolucion nroproveido_revocatorias_confirm_pe ,
+	FechaResolucion fecproveido_revocatorias_confirm_pe ,
+	FormaResolucion resolucion_revocatorias_confirm_pe,
+	lower(left(datename(month, Periodo), 3)) mes_revocatorias_confirm_pe,
+	'NINGUNA' observ_revocatorias_confirm_pe,
+	Periodo periodo_revocatorias_confirm_pe
+FROM
+	[ODS.VPTRecursosRevocatoriasConfirmados] ovrc
+where
+	(
+	(year(Periodo)<= 2023
+		and FormaResolucion like '%CONFIRM%' COLLATE Latin1_General_CI_AS)
+	or (year(Periodo)>= 2024
+		and FormaResolucion not in('REVOCA', 'REVOCA TOTALMENTE', 'REVOCAR', 'REVOCAR TOTALMENTE'))
+		)
+order by
+	Periodo,
+	FechaResolucion;
 
 
 
