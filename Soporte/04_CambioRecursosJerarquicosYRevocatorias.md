@@ -104,8 +104,46 @@ WHERE
 			)));
 ```
 
+## Cambios en VPTIndicadoresGestion (Actualización del indicador 11)
+- Se cambió la consulta para considerar excluir a partir de la gestión 2024 los estados: 'REVOCA', 'REVOCA TOTALMENTE', 'REVOCAR', 'REVOCAR TOTALMENTE'
+```javascript
+select
+							count(*)
+				from
+							[ODS.VPTRecursosRevocatoriasConfirmados]
+				where
+					( (year(Periodo)<= 2023
+						and FormaResolucion like '%CONFIRM%' COLLATE Latin1_General_CI_AS)
+					or (year(Periodo)>= 2024
+						and FormaResolucion not in('REVOCA', 'REVOCA TOTALMENTE', 'REVOCAR', 'REVOCAR TOTALMENTE')) )
+					and year(Periodo)= Gestion
+					and month(Periodo)<= NumeroMes
+				)
+```
 
-
-## Tabla [ODS.VPTRecursosJerarquicos] 
-- Se regularizaron los registros en la tabla, existian registros faltantes que se encontraban en el XLS (base de datos DBJ, Hoja VPT-REVOCATORIAS CONF)
-- Se creo un backup de la tabla antes de la modificación (04 ODS.VPTRecursosRevocatoriasConfirmados_BKP20241016.sql)
+## Cambios en [VPTrevocatorias_confirm_pe] 
+- Se actualizó la condición para considerar los estados solicitados para la gestión 2024: 'REVOCA', 'REVOCA TOTALMENTE', 'REVOCAR', 'REVOCAR TOTALMENTE'
+```javascript
+select
+	ovrc.RazonSocial razonsocial_revocatorias_confirm_pe,
+	NIT nit_revocatorias_confirm_pe,
+	Departamento depto_revocatorias_confirm_pe,
+	NumeroResolucion nroproveido_revocatorias_confirm_pe ,
+	FechaResolucion fecproveido_revocatorias_confirm_pe ,
+	FormaResolucion resolucion_revocatorias_confirm_pe,
+	lower(left(datename(month, Periodo), 3)) mes_revocatorias_confirm_pe,
+	'NINGUNA' observ_revocatorias_confirm_pe,
+	Periodo periodo_revocatorias_confirm_pe
+FROM
+	[ODS.VPTRecursosRevocatoriasConfirmados] ovrc
+where
+	(
+	(year(Periodo)<= 2023
+		and FormaResolucion like '%CONFIRM%' COLLATE Latin1_General_CI_AS)
+	or (year(Periodo)>= 2024
+		and FormaResolucion not in('REVOCA', 'REVOCA TOTALMENTE', 'REVOCAR', 'REVOCAR TOTALMENTE'))
+		)
+order by
+	Periodo,
+	FechaResolucion;
+```
