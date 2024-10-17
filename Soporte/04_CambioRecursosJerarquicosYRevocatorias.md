@@ -1,6 +1,49 @@
-## Tabla [ODS.VPTRecursosRevocatoriasConfirmados] 
-- Se regularizaron los registros en la tabla, existian registros faltantes que se encontraban en el XLS (base de datos DBJ, Hoja VPT-REVOCATORIAS CONF)
-- Se creo un backup de la tabla antes de la modificación (04 ODS.VPTRecursosRevocatoriasConfirmados_BKP20241016.sql)
+## Tabla [ODS.VPTRecursosJerarquicos] 
+- Se regularizaron los registros en la tabla, existian registros faltantes para la gestión 2024 y 2023 que se encontraban en el XLS (base de datos DBJ, Hoja VPT-JERARQUICOS PE)
+- Se actualizó la consulta en MAIN (QLIK) para eliminar la dependencia al archivo XLSX:
+
+```javascript
+RecursoJerarquicoPE:
+  LOAD
+  [RazonSocial] as [RAZON SOCIAL RJ] ,
+  [NIT] asd [NIT RJ]   ,
+  [Departamento] as [DEPARTAMENTO RJ] , 
+  [NumeroProveido] as [PROVEÍDO RJ] , 
+  [FechaProveido] as [FECHA PROVEIDO RJ] , 
+  [EstadoTramite] as [ESTADO DEL TRAMITE RJ] ,
+  [mes] as [PERIODO RJ],
+  [anio] as [AÑO RJ],
+  [observaciones] as [OBSERVACIONES RJ];
+  SQL
+  SELECT
+    RecursoJerarquicoID,
+    RazonSocial,
+    NIT,
+    Departamento,
+    NumeroProveido,
+    FechaProveido,
+    PosicionRatificada,
+    EstadoTramite,
+    case
+      when month(Periodo) = 1 then 'ene'
+      when month(Periodo) = 2 then 'feb'
+      when month(Periodo) = 3 then 'mar'
+      when month(Periodo) = 4 then 'abr'
+      when month(Periodo) = 5 then 'may'
+      when month(Periodo) = 6 then 'jun'
+      when month(Periodo) = 7 then 'jul'
+      when month(Periodo) = 8 then 'ago'
+      when month(Periodo) = 9 then 'sep'
+      when month(Periodo) = 10 then 'oct'
+      when month(Periodo) = 11 then 'nov'
+      when month(Periodo) = 12 then 'dic'
+      when month(Periodo) is null then 'NA'
+    end as mes,
+    year(Periodo) as anio,
+    'NINGUNA' as observaciones
+  FROM
+    [ODS.VPTRecursosJerarquicos];
+```
 
 ## Tabla [dbo].[ODS.VPTRecursosJerarquicosConfirmados]
 - Se verificaron los registros en la tabla, se encontraron 3 registros del mes de Abril-2024 con el año 2004, se consultó a la DNJ y se solicitó la actualización de la fecha correcta (2024)
@@ -61,3 +104,8 @@ WHERE
 			)));
 ```
 
+
+
+## Tabla [ODS.VPTRecursosJerarquicos] 
+- Se regularizaron los registros en la tabla, existian registros faltantes que se encontraban en el XLS (base de datos DBJ, Hoja VPT-REVOCATORIAS CONF)
+- Se creo un backup de la tabla antes de la modificación (04 ODS.VPTRecursosRevocatoriasConfirmados_BKP20241016.sql)
