@@ -2,6 +2,24 @@
 - Se regularizaron los registros en la tabla, existian registros faltantes para la gestión 2024 y 2023 que se encontraban en el XLS (base de datos DBJ, Hoja VPT-JERARQUICOS PE)
 - Se actualizó la consulta en MAIN (QLIK) para eliminar la dependencia al archivo XLSX:
 
+Anterior:
+```javascript
+RecursoJerarquicoPE:
+  LOAD
+  [RAZON SOCIAL RJ] ,
+  [NIT RJ]   ,
+  [DEPARTAMENTO RJ] , 
+  [PROVEÍDO RJ] , 
+  [FECHA PROVEIDO RJ] , 
+  [ESTADO DEL TRAMITE RJ] ,
+  [PERIODO RJ],
+  [AÑO RJ],
+  [OBSERVACIONES RJ]
+  FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
+  (ooxml, embedded labels, header is 0 lines, table is [VPT-JERARQUICOS PE]);
+```
+
+Nuevo:
 ```javascript
 RecursoJerarquicoPE:
   LOAD
@@ -59,8 +77,26 @@ RecursoJerarquicoPE:
 ```
 	
 - Se actualizó la consulta en MAIN (QLIK) para eliminar la dependencia al archivo XLSX e incluir los estados solicitados por la DNJ:
-```javascript
 
+Anterior:
+```javascript
+RecursoJerarquicoCONFIRMADOS:
+  LOAD
+  [RAZON SOCIAL RJC],
+  [NIT O CI RJC],
+  [DEPARTAMENTO RJC],
+  [N° RESOLUCION RJC],
+  [FECHA RJC],
+  [RESUELVE RJC],
+  [PERIODO RJC],
+  [AÑO RJC],
+  [OBSERVACIONES RJC]
+  FROM [E:\MINAJ 2015\DNJ\BASE DE DATOS DNJ.xlsx]
+  (ooxml, embedded labels, header is 0 lines, table is [VPT-JERARQUICOS CONF]);
+```
+
+Nuevo:
+```javascript
 RecursoJerarquicoCONFIRMADOS:
   LOAD
   [RazonSocial] as [RAZON SOCIAL RJC],
