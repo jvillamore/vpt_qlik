@@ -1298,13 +1298,27 @@ LOAD
      [fechars_monto_sancion]    as   [fechars_monto_sancion],
      [estadocite_monto_sancion]    as   [estadocite_monto_sancion],
      [periodo_monto_sancion]    as   [periodo_monto_sancion],
-     [observ_monto_sancion]    as   [observ_monto_sancion];     
-
+	 [mes_monto_sancion] as [MesFiltro],
+	 [anio_monto_sancion] as [AñoFiltro],
+     [observ_monto_sancion]    as   [observ_monto_sancion]
+	 ;     
 SQL     
-select NombreEmpresa emp_monto_sancion,DocumentoIdentidad documento_monto_sancion,
-Departamento depto_monto_sancion,CodigoCiteRS cite_monto_sancion,MontoUFVRS montoufv_monto_sancion,
-[Dirección Trámite] direccion_monto_sancion,EstadoRS estado_monto_sancion,FechaRS fechars_monto_sancion,[EstadoCiteRS] estadocite_monto_sancion,periodo_monto_sancion,' ' observ_monto_sancion
-from vpt.ViewMontosSanciones;
+select
+	NombreEmpresa emp_monto_sancion,
+	DocumentoIdentidad documento_monto_sancion,
+	Departamento depto_monto_sancion,
+	CodigoCiteRS cite_monto_sancion,
+	MontoUFVRS montoufv_monto_sancion,
+	[Dirección Trámite] direccion_monto_sancion,
+	EstadoRS estado_monto_sancion,
+	FechaRS fechars_monto_sancion,
+	[EstadoCiteRS] estadocite_monto_sancion,
+	periodo_monto_sancion,
+	lower(left(datename(month, FechaRS), 3)) as mes_monto_sancion,
+	year(FechaRS) as anio_monto_sancion,
+	' ' observ_monto_sancion
+from
+	vpt.ViewMontosSanciones;
 
 
 VPTmultas_sigep:
