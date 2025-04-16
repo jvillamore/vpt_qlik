@@ -1320,7 +1320,6 @@ select
 from
 	vpt.ViewMontosSanciones;
 
-
 VPTmultas_sigep:
 LOAD
      [concepto_multas_sigep] as [concepto_multas_sigep], 
@@ -1433,9 +1432,16 @@ LOAD
      [nom_res_reg]   as [nom_res_reg] , 
      [obs_res_reg]  as [obs_res_reg];
 
-select FechaResolucion fecha_res_reg,NumeroResolucion num_res_reg,NombreResolucion nom_res_reg,ObjetoResolucion obs_res_reg
-from [ODS.VPTResolucionesRegulatorias]
-order by ResolucionID;
+select
+	FechaResolucion fecha_res_reg,
+	NumeroResolucion num_res_reg,
+	NombreResolucion nom_res_reg,
+	ObjetoResolucion obs_res_reg
+from
+	[ODS.VPTResolucionesRegulatorias] r
+where r.NumeroResolucion is not NULL AND LEN(r.NumeroResolucion) > 0
+order by
+	ResolucionID;
 
 select oficina oficina_control_pe,empresa empresa_control_pe, nombrepromocion promo_control_pe, nit nit_control_pe,
 isnull(lpz,0)lpz_control_pe,isnull(oru,0) oru_control_pe,isnull(pot,0) pot_control_pe,
